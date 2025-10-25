@@ -1,0 +1,226 @@
+Definir lista cursos< vacia
+definir lista hsitorial
+definir Cola_revision < cola vacia
+
+FUNCION registrar_curso--------------------------------------------------------------
+MOSTRAR "REGISTRAR CURSO"
+
+REPETIR
+	LEER nombre_curso
+	SI nombre_curso ES vacio ENTONCES
+		ESCRIBIR "Error": El nombre no puede estar vacio
+	SINO
+	    SALIR DEL BUCLE
+FIN REPETIR
+
+REPETIR 
+	LEER nota
+	SI nota NO es numérica O nota < 0 O nota > 100 ENTONCES
+		ESCRIBIR "Error: nota invalida"
+	SINO
+	    SALIR DEL BUCLE
+FIN REPETIR
+
+AGREGAR (nombre_curso, nota) A CURSOS
+AGREGAR mensaje al HISTORIAL
+ESCRIBIR confirmación de registro
+
+FUNCION mostrar_curso()-----------------------------------------------
+SI CURSOS ESTA VACIO ENTONCES
+     ESCRIBIR "No hay cursos registrados"
+SINO
+     PARA CADA (curso, nota) EN CURSOS HACER
+	 MOSTRAR curso y nota
+FIN SI
+
+FUNCION calcular_promedio----------------------------------------
+SI CURSOS ESTA VACIO ENTONCES
+    ESCRIBIR "No hay cursos registrados"
+SINO
+    SUMAR todas las notas
+    DIVIDIR entre la cantidad de cursos
+    ESCRIBIR promedio
+FIN SI
+
+FUNCION contar_aprobados_reprobados--------------------------------------- 
+SI CURSOS ESTA VACIO ENTONCES
+    ESCRIBIR "No hay cursos registrados"
+SINO
+    aprobados <- contar cursos con nota >= 61
+    reprobados <- total - aprobados
+    ESCRIBIR resultados
+FIN SI
+
+FUNCION buscar_curso_lineal(nombre)---------------------------------------
+PARA CADA (curso, nota) EN CURSOS HACER
+    SI curso == nombre ENTONCES
+	MOSTRAR curso y nota
+	RETORNAR (curso, nota)
+FIN PARA
+ESCRIBIR "Curso no encontrado"
+RETORNAR NULO
+
+FUNCION actualizar_nota()---------------------------------------------------
+SI CURSOS ESTA VACIO ENTONCES
+    ESCRIBIR "No hay cursos registrados"
+    SALIR
+FIN SI
+
+LEER nombre_curso
+PARA i DESDE 0 HASTA longitud(CURSOS)-1 HACER
+    SI CURSOS[i].nombre == nombre cursos ENTONCES
+	REPETIR
+	     LEER nueva_nota
+	     SI nueva_nota NO valida ENTONCES
+	          ESCRIBIR error
+	     SINO
+ 	  	 ACTUALIZAR CURSOS[i].nota <- nueva_nota
+		 REGISTRAR EN HISTORIAL
+		 ESCRIBIR confirmación
+		 SALIR DE LA FUNCION
+        FIN REPETIR
+FIN PARA
+ESCRIBIR "Curso no encontrado"
+
+FUNCION eliminar_curso()---------------------------------------------------------
+SI CURSOS ESTA  VACIO ENTONCES
+    ESCRIBIR "No hay cursos registrados"
+    SALIR
+FIN SI
+
+LEER nombre_curso
+PARA I DESDE 0 HASTA longitud (CURSOS)-1 HACER
+    SI CURSOS[i].nombre == nombre_curso ENTONCES
+	ELIMINAR CURSOS[i]
+	REGISTRAR EN HISTORIAL
+	ESCRIBIR confirmación
+	SALIR DE LA FUNCION
+FIN PARA
+ESCRIBIR "Curso no encontrado"
+
+FUNCION ordenar_burbuja()----------------------------------------------------------
+CREAR copia de CURSOS en LISTA
+PARA i DESDE 0 HASTA n-2 HACER
+   PARA j DESDE 0 HASTA n-i-2 HACER
+	SI LISTA[j].nota > LISTA[j+1].nota ENTONCES
+      	     INTERCAMBIAR LISTA[j] <> LISTA[j+1]
+ESCRIBIR LISTA ordenada por nota
+
+FUNCION ordenar_insercion()------------------------------------------------------
+PARA i DESDE 1 HASTA longitud(LISTA)-1 HACER
+    clave <- LISTA[i]
+    j <- i - 1
+    MIENTRAS j >= 0 Y LISTA[j].nombre > clave.nombre HACER
+	LISTA[j+1] <- LISTA[j]
+	j <- j -1
+    LISTA[j+1] <- clave
+ESCRIBIR LISTA ordenada por nombre
+
+FUNCION buscar_binaria(nombre)-------------------------------------------------------------
+SI CURSOS ESTA VACIO ENTONCES
+    ESCRIBIR "No hay cursos registrados"
+    RETORNAR NULO
+FIN SI
+
+ORDENAR CURSOS alfabéticamente por nombre
+INCIO <- 0
+FIN <- longitud(CURSOS) - 1
+
+MIENTRAS INICIO <= FIN HACER
+    MEDIO <- (INICIO + FIN) / 2
+    SI CURSOS[MEDIO].nombre == nombre ENTONCES
+	MOSTRAR curso encontrado
+	RETORNAR curso
+    SINO SI CURSOS[MEDIO].nombre < nombre ENTONCES
+	INICIO <- MEDIO + 1
+    SINO
+	FIN <- MEDIO - 1
+FIN MIENTRAS
+ESCRIBIR "Curso no encontrado"
+RETORNAR NULO
+
+
+FUNCION simular_cola_revision()---------------------------------------------------------
+MIENTRAS VERDADERO HACER
+    ESCRIBIR menú de revisión:
+	1. Agregar solicitud
+	2. Atender solicitud
+	3. Mostrar cola
+	4. Volver al menú principal
+    LEER opción
+
+    SEGUN opción Hacer
+	CASO "1":
+	    LEER nombre
+	    AGREGAR nombre A cola_revision
+	CASO "2":
+	    SI cola_revision NO esta vacia ENTONCES
+		ELIMINAR primer elemento y ESCRIBIR mensaje
+	    SINO MOSTRAR "No hay solicitudes"
+	CASO "3":
+	    ESCRIBIR contenido de la cola
+	CASO "4":
+	    SALIR del submenú
+	CASO CONTRARIO:
+	    ESCRIBIR "Opción invalida"
+FIN MIENTRAS
+
+FUNCION mostrar_historial()-----------------------------------------------------------------
+SI HISTORIAL ESTA VACIO ENTONCES
+    ESCRIBIR "No hay cambios registrados"
+SINO
+    ESCRIBIR HISTORIAL
+FIN SI 
+
+
+
+
+
+
+
+
+mientras verdadero Hacer
+	MOSTRAR menú principal
+	1. Registrar nuevo curso
+	2. Mostrar todos los cursos
+	3. Calcular promedio general
+	4. Contar cursos aprobados y reprobados
+	5. Buscar curso (búsqueda lineal)
+	6. Actualizar nota de un curso
+	7. Eliminar un curso
+	8. Ordenar cursos por nota (Burbuja)
+	9. Ordenar cursos por nombre (insercion)
+	10. Buscar curso (búsqueda binaria)
+	11. Simular cola de solicitudes de revisión
+	12. Mostrar historial de cambios (pila)
+	13. Salir
+
+LEER opción
+
+SEGUN opcion HACER
+	CASO "1": LLAMAR registrar_curso()
+	CASO "2": LLAMAR mostrar_curso()
+	CASO "3": LLAMAR calcular_promedio()
+	CASO "4": LLAMAR contar_aprobados_reprobados()
+	CASO "5":
+		LEER nombre
+		LLAMAR buscar_curso_lineal(nombre)
+	CASO "6": LLAMAR actualizar_nota()
+	CASO "7": LLAMAR eliminar_curso()
+	CASO "8": LLAMAR ordenar_burbuja() 
+	CASO "9": LLAMAR ordenar_insercion()
+	CASO "10":
+		LEER nombre
+		LLAMAR buscar_binaria(nombre)
+	CASO "11": LLAMAR simular_cola_revison()
+	CASO "12": LLAMAR mostrar_historial() 
+	CASO "13": 
+		MOSTRAR "Saliendo del sistema..."
+		TERMINAR PROGRAMA
+	CASO CONTRARIO:
+		MOSTRAR "Opción invalida"
+	FIN SEGUN
+FIN MIENTRAS
+FIN PROGRAMA
+
+
